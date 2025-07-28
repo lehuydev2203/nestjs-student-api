@@ -7,7 +7,9 @@ import { Course, CourseDocument } from './schemas/course.schema';
 
 @Injectable()
 export class CoursesService {
-  constructor(@InjectModel(Course.name) private courseModel: Model<CourseDocument>) {}
+  constructor(
+    @InjectModel(Course.name) private courseModel: Model<CourseDocument>,
+  ) {}
 
   async create(createCourseDto: CreateCourseDto): Promise<Course> {
     const createdCourse = new this.courseModel(createCourseDto);
@@ -18,24 +20,39 @@ export class CoursesService {
     return this.courseModel.find({ student_id: studentId }).exec();
   }
 
-  async findOne(id: string): Promise<Course> {
+  async findOne(id: string): Promise<Course | null> {
     return this.courseModel.findById(id).exec();
   }
 
-  async update(id: string, updateCourseDto: UpdateCourseDto): Promise<Course> {
-    return this.courseModel.findByIdAndUpdate(id, updateCourseDto, { new: true }).exec();
+  async update(
+    id: string,
+    updateCourseDto: UpdateCourseDto,
+  ): Promise<Course | null> {
+    return this.courseModel
+      .findByIdAndUpdate(id, updateCourseDto, { new: true })
+      .exec();
   }
 
-  async remove(id: string): Promise<Course> {
+  async remove(id: string): Promise<Course | null> {
     return this.courseModel.findByIdAndDelete(id).exec();
   }
 
-  async findForStudentByName(studentId: string, name: string): Promise<Course[]> {
-    return this.courseModel.find({ student_id: studentId, name: new RegExp(name, 'i') }).exec();
+  async findForStudentByName(
+    studentId: string,
+    name: string,
+  ): Promise<Course[]> {
+    return this.courseModel
+      .find({ student_id: studentId, name: new RegExp(name, 'i') })
+      .exec();
   }
 
-  async findForStudentByScore(studentId: string, score: number): Promise<Course[]> {
-    return this.courseModel.find({ student_id: studentId, score: score }).exec();
+  async findForStudentByScore(
+    studentId: string,
+    score: number,
+  ): Promise<Course[]> {
+    return this.courseModel
+      .find({ student_id: studentId, score: score })
+      .exec();
   }
 
   async getStudentAverageScore(studentId: string): Promise<any> {

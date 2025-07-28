@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Seeder } from 'nestjs-seeder';
-import { Student } from '../schemas/student.schema';
+import { Student } from './schemas/student.schema';
 
 @Injectable()
 export class StudentsSeeder implements Seeder {
-  constructor(@InjectModel(Student.name) private readonly studentModel: Model<Student>) {}
+  constructor(
+    @InjectModel(Student.name) private readonly studentModel: Model<Student>,
+  ) {}
 
   async seed(): Promise<any> {
     const students = [

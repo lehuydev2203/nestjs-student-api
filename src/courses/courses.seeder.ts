@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Seeder } from 'nestjs-seeder';
-import { Course } from '../schemas/course.schema';
-import { Student } from '../../students/schemas/student.schema';
+import { Course } from './schemas/course.schema';
+import { Student } from 'src/students/schemas/student.schema';
 
 @Injectable()
 export class CoursesSeeder implements Seeder {
@@ -15,7 +15,9 @@ export class CoursesSeeder implements Seeder {
   async seed(): Promise<any> {
     const students = await this.studentModel.find();
     if (students.length === 0) {
-      console.log('Cannot seed courses because no students found. Please seed students first.');
+      console.log(
+        'Cannot seed courses because no students found. Please seed students first.',
+      );
       return;
     }
 
@@ -29,12 +31,14 @@ export class CoursesSeeder implements Seeder {
       { name: 'Kiểm thử ứng dụng di động', score: 0 },
     ];
 
-    const coursesToInsert = [];
+    const coursesToInsert: any[] = [];
 
     for (const student of students) {
       // Gán ngẫu nhiên 3-5 môn học cho mỗi sinh viên
       const numberOfCourses = Math.floor(Math.random() * 3) + 3; // 3 to 5
-      const shuffledCourses = [...mobileCourses].sort(() => 0.5 - Math.random());
+      const shuffledCourses = [...mobileCourses].sort(
+        () => 0.5 - Math.random(),
+      );
 
       for (let i = 0; i < numberOfCourses; i++) {
         coursesToInsert.push({
